@@ -20,7 +20,11 @@ dependencies {
     // compose.desktop.currentOs should be used in launcher-sourceSet
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
-    implementation(compose.desktop.currentOs)
+    implementation(compose.desktop.currentOs) // Source: https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    // Source: https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testImplementation("org.testng:testng:7.10.2")
+
+
 }
 
 compose.desktop {
@@ -33,4 +37,8 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+tasks.test {
+    useTestNG()
 }

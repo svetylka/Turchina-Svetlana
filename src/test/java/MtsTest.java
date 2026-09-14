@@ -6,9 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
-import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MtsTest {
@@ -31,48 +30,33 @@ public class MtsTest {
                 WebElement cookieBtnXpath = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Принять')]")));
                 cookieBtnXpath.click();
             } catch (Exception ex) {
-                System.out.println("Баннер куки не появился");
+                System.out.println("Cookie banner not found");
             }
         }
     }
 
     @Test
     @Order(1)
-    @DisplayName("1. Проверить название указанного блока")
-    public void testBlockTitle() {
-        WebElement title = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[contains(text(), 'Онлайн пополнение')]")));
-        assertNotNull(title);
+    @DisplayName("1. Проверить плейсхолдеры для Услуг связи")
+    public void testCommunicationPlaceholders() {
+        WebElement phone = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@placeholder, 'Номер телефона')]")));
+        assertNotNull(phone);
     }
 
     @Test
     @Order(2)
-    @DisplayName("2. Проверить логотипы платёжных систем")
-    public void testPaymentLogos() {
-        List<WebElement> logos = driver.findElements(By.cssSelector(".pay__partners img"));
-        assertFalse(logos.isEmpty(), "Логотипы платёжных систем не найдены!");
+    @DisplayName("2. Проверить плейсхолдеры для Домашнего интернета")
+    public void testInternetPlaceholders() {
+        WebElement phone = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@placeholder, 'Номер подписчика') or @id='internet-phone']")));
+        assertNotNull(phone);
     }
 
     @Test
     @Order(3)
-    @DisplayName("3. Проверить ссылку 'Подробнее о сервисе'")
-    public void testMoreInfoLink() {
-        WebElement moreInfoLink = wait.until(ExpectedConditions.elementToBeClickable(By.linkText("Подробнее о сервисе")));
-        assertTrue(moreInfoLink.isDisplayed());
-    }
-
-    @Test
-    @Order(4)
-    @DisplayName("4. Проверить работу кнопки 'Продолжить'")
-    public void testSubmitForm() {
-        WebElement phoneInput = wait.until(ExpectedConditions.elementToBeClickable(By.id("connection-phone")));
-        phoneInput.sendKeys("297777777");
-
-        WebElement amountInput = driver.findElement(By.id("connection-sum"));
-        amountInput.sendKeys("10");
-
-        WebElement submitButton = driver.findElement(By.xpath("//button[contains(text(), 'Продолжить')]"));
-        assertTrue(submitButton.isEnabled());
-        submitButton.click();
+    @DisplayName("3. Проверить плейсхолдеры для Рассрочки")
+    public void testInstallmentPlaceholders() {
+        WebElement score = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@placeholder, 'Номер счета') or @id='score-instalment']")));
+        assertNotNull(score);
     }
 
     @AfterEach

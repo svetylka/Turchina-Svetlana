@@ -20,14 +20,14 @@ public class MtsTest {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
         wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        driver.get("https://www.mts.by");
+        driver.get("https://mts.by");
 
         try {
             WebElement cookieBtn = wait.until(ExpectedConditions.elementToBeClickable(By.id("cookie-agree")));
             cookieBtn.click();
         } catch (Exception e) {
             try {
-                WebElement cookieBtnXpath = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(), 'Принять')]")));
+                WebElement cookieBtnXpath = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[contains(text(),'Принять')]")));
                 cookieBtnXpath.click();
             } catch (Exception ex) {
                 System.out.println("Cookie banner not found");
@@ -39,24 +39,32 @@ public class MtsTest {
     @Order(1)
     @DisplayName("1. Проверить плейсхолдеры для Услуг связи")
     public void testCommunicationPlaceholders() {
-        WebElement phone = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@placeholder, 'Номер телефона')]")));
-        assertNotNull(phone);
+        MtsPage mtsPage = new MtsPage(driver);
+        assertNotNull(mtsPage.getCommunicationPlaceholderText());
     }
 
     @Test
     @Order(2)
     @DisplayName("2. Проверить плейсхолдеры для Домашнего интернета")
     public void testInternetPlaceholders() {
-        WebElement phone = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@placeholder, 'Номер подписчика') or @id='internet-phone']")));
-        assertNotNull(phone);
+        MtsPage mtsPage = new MtsPage(driver);
+        assertNotNull(mtsPage.getInternetPlaceholderText());
     }
 
     @Test
     @Order(3)
     @DisplayName("3. Проверить плейсхолдеры для Рассрочки")
     public void testInstallmentPlaceholders() {
-        WebElement score = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[contains(@placeholder, 'Номер счета') or @id='score-instalment']")));
-        assertNotNull(score);
+        MtsPage mtsPage = new MtsPage(driver);
+        assertNotNull(mtsPage.getInstallmentPlaceholderText());
+    }
+
+    @Test
+    @Order(4)
+    @DisplayName("4. Проверить плейсхолдеры для Задолженности")
+    public void testDebtPlaceholders() {
+        MtsPage mtsPage = new MtsPage(driver);
+        assertNotNull(mtsPage.getDebtPlaceholderText());
     }
 
     @AfterEach
